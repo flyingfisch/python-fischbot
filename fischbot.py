@@ -4,6 +4,9 @@ import re
 import random
 import time
  
+def send2chan(msg):
+    irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+
 def atbegin(str, line):
     try:
         ans = line.split()[4].find(str)
@@ -92,16 +95,16 @@ while True:
  
     # commands
     if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'QUIT':
-        irc.send('PRIVMSG ' + channel + ' :Oh, don\'t leave me little buddy! I need you, and you need me! \r\n')
+        send2chan('Oh, don\'t leave me little buddy! I need you, and you need me!')
  
     if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'JOIN' and data.split('!')[0][1:] != nick:
-        irc.send('PRIVMSG ' + channel + ' :Heya ' + data.split('!')[0][1:] + '! \r\n')
+        send2chan('Heya ' + data.split('!')[0][1:] + '!')
  
     if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN':
-        irc.send('PRIVMSG ' + channel + ' :Anyone here?\r\n')
+        send2chan('Anybody here?')
  
     if data.find('naib864 entered the room') != -1:
-        irc.send('PRIVMSG ' + channel + ' :Anyone here?\r\n')
+        send2chan('Anybody here?')
  
     if data.split()[1] == 'KICK':
         time.sleep(10)
@@ -109,13 +112,15 @@ while True:
  
     if data.find('PRIVMSG') != -1:
         if atbegin('test', data):
-            irc.send('PRIVMSG ' + channel + ' :Test received.\r\n')
+            send2chan('Test received.')
  
         elif atbegin('!8ball', data):
-            irc.send('PRIVMSG ' + channel + ' :' + _8ball[random.randint(0, len(_8ball) - 1)] + '\r\n')
+            send2chan(_8ball[random.randint(0, len(_8ball) - 1)])
  
         elif atbegin('!flood', data):
             irc.send('PRIVMSG ' + channel + ' :Flooding is wrong. Flooding gets bots banned. I will never flood.\r\n')
+            while 1:
+                irc.send('PRIVMSG ' + channel + ' :Casimo was here\r\n')
  
         elif atbegin('!coin', data):
             if random.randint(0,1) == 1:
