@@ -118,16 +118,16 @@ while True:
             send2chan(_8ball[random.randint(0, len(_8ball) - 1)])
  
         elif atbegin('!flood', data):
-            irc.send('PRIVMSG ' + channel + ' :Flooding is wrong. Flooding gets bots banned. I will never flood.\r\n')
+            send2chan('Flooding is wrong. Flooding gets bots banned. I will never flood.')
             while 1:
-                irc.send('PRIVMSG ' + channel + ' :Casimo was here\r\n')
+                send2chan('Casimo was here')
  
         elif atbegin('!coin', data):
             if random.randint(0,1) == 1:
                 result = 'Heads'
             else:
                 result = 'Tails'
-            irc.send('PRIVMSG ' + channel + ' :' + result + '\r\n')
+            send2chan(result)
  
         elif atbegin('!say', data):
             try:
@@ -135,7 +135,7 @@ while True:
             except:
                 message = 'You didn\'t tell me what to say!'
  
-            irc.send('PRIVMSG ' + channel + ' :' + message + '\r\n')
+            send2chan(message)
  
         elif atbegin('!ddg', data):
             try:
@@ -145,7 +145,7 @@ while True:
  
             query = query.replace(' ', '+')
  
-            irc.send('PRIVMSG ' + channel + ' :[DuckDuckGo Results] http://ddg.gg/?q=' + query + '\r\n')
+            send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
@@ -153,41 +153,41 @@ while True:
             except:
                 nickToSendTo = ''
  
-            irc.send('PRIVMSG ' + channel + ' :' + nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself\r\n')
+            send2chan(nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself')
  
         elif data.lower().find('yay') != -1:
-            irc.send('PRIVMSG ' + channel + ' :w00t!\r\n')
+            send2chan(':w00t!')
  
         elif data.lower().find('simon lothar') != -1:
-            irc.send('PRIVMSG ' + channel + ' :"I\'ll be back!"\r\n')
+            send2chan('"I\'ll be back!"')
  
  
         elif data.lower().find('are you sure') != -1:
-            irc.send('PRIVMSG ' + channel + ' :of course I\'m sure!\r\n')
+            send2chan('of course I\'m sure!')
             time.sleep(2)
-            irc.send('PRIVMSG ' + channel + ' :hmmph.\r\n')
+            send2chan('hmmph.')
  
         elif data.lower().find('why') != -1:
-            irc.send('PRIVMSG ' + channel + ' :because ' + whyphrases[random.randint(0, len(whyphrases) - 1)] + '.\r\n')
+            send2chan('because ' + whyphrases[random.randint(0, len(whyphrases) - 1)] + '.')
  
         elif data.find(nick) != -1 and (data.find('hi ') != -1 or data.find(' hi') != -1):
-            irc.send('PRIVMSG ' + channel + ' :' + hiphrases[random.randint(0, len(hiphrases) - 1)] + '\r\n')
+            send2chan(hiphrases[random.randint(0, len(hiphrases) - 1)])
          
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
-            irc.send('PRIVMSG ' + channel + ' :' + responses[random.randint(0, len(responses) - 1)] + '\r\n')
+            send2chan(responses[random.randint(0, len(responses) - 1)])
          
         elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
-            irc.send('PRIVMSG ' + channel + ' :I\'m popular :blush: \r\n')
+            send2chan('I\'m popular :blush: ')
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
-            irc.send('PRIVMSG ' + channel + ' :' + 'You make me cry. :\'(' + '\r\n')
+            send2chan('You make me cry. :\'(')
  
  
         elif atbegin('!info', data):
-            irc.send('PRIVMSG ' + channel + ' :Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch. Help can be obtained by typing !help. I am very good at ping-pong.\r\n')
+            send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. I am very good at ping-pong.')
  
         elif atbegin('!help', data):
-            irc.send('PRIVMSG ' + channel + ' :Commands currently supported: !intro <name>, !info, !8ball, !coin, !say, !ddg, !flood\r\n')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball, !coin, !say, !ddg, !flood')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
