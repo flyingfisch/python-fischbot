@@ -15,11 +15,15 @@ def send2chan(msg):
     except:
         print("Connection error, trying to restart")
 
-        try:
-            subprocess.call("./fischbot.py")
-        except:
-            print("Internal error, could not restart, giving up")
-            exit(0)
+        for j in range(0, 120):
+            try:
+                subprocess.call("./fischbot.py")
+            except:
+                print("Restart failed, next try in 5 seconds")
+                time.sleep(5)
+
+        print("Internal error, could not restart, giving up")
+        exit(0)
 
 def atbegin(str, line):
     try:
