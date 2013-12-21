@@ -1,4 +1,4 @@
-#!/usr/bin env python
+#!/usr/bin/env python
 
 import socket
 import sys
@@ -6,9 +6,20 @@ import re
 import random
 import time
 import urllib2
+import os
+import subprocess
  
 def send2chan(msg):
-    irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+    try:
+        irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+    except:
+        print("Connection error, trying to restart")
+
+        try:
+            subprocess.call("./fischbot.py")
+        except:
+            print("Internal error, could not restart, giving up")
+            exit(0)
 
 def atbegin(str, line):
     try:
