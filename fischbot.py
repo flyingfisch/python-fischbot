@@ -112,7 +112,7 @@ while True:
     print data
  
     # commands
-    if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'QUIT':
+    if (data.split('!')[0].find('fisch') != -1 or data.split('!')[0].find('casimo') != -1) and data.split()[1] == 'QUIT':
         send2chan('Oh, don\'t leave me little buddy! I need you, and you need me!')
  
     if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'JOIN' and data.split('!')[0][1:] != nick:
