@@ -5,6 +5,7 @@ import sys
 import re
 import random
 import time
+import urllib2
  
 def send2chan(msg):
     irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
@@ -148,6 +149,36 @@ while True:
             query = query.replace(' ', '+')
  
             send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
+
+            try:
+                url = urllib2.urlopen("https://duckduckgo.com/html/?q=" + query + "&t=bot")
+            except:
+                e = sys.ecx_info()[0]
+                send2chan('An error occured :' + e.code)
+            
+            result = url.read()
+            url.close()
+
+            result = result.replace("&quot;", '"')
+            result = result.replace("&#x28;", "(")
+            result = result.replace("&#x29;", ")")
+
+            result = result.replace("\n", "{nl}")
+
+            zeroclick = re.findall(r'<div class="zero-click-result".*?</div>', result)
+            if len(zeroclick) > 0:
+                zeroclick = zeroclick[0]
+
+                zeroclick = zeroclick.replace('<div class="zero-click-result" id=zero_click_abstract">', '')
+                zeroclick = zeroclick.replace('</div>', '')
+
+                zeroclick = re.sub(r"<.*?>", "", zeroclick)
+
+                for string in zeroclick.split("{nl}"):
+                    string = string.replace("{nl}", "")
+                    string = string.strip()
+                    if len(string) > 0:
+                        send2chan(string)
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
