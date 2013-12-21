@@ -165,6 +165,8 @@ while True:
 
             result = result.replace("\n", "{nl}")
 
+            result = re.sub(r'<div id="zero_click_image">.*?</div>', "", result)
+
             zeroclick = re.findall(r'<div class="zero-click-result".*?</div>', result)
             if len(zeroclick) > 0:
                 zeroclick = zeroclick[0]
