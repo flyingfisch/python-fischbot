@@ -177,6 +177,7 @@ while True:
             result = result.replace("&quot;", '"')
             result = result.replace("&#x28;", "(")
             result = result.replace("&#x29;", ")")
+            // TODO: add more html replacements
 
             result = result.replace("\n", "{nl}")
 
@@ -235,9 +236,12 @@ while True:
  
         elif atbegin('!info', data):
             send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. I am very good at ping-pong.')
+
+        elif atbegin('!info-contrib', data):
+            send2chan('If you want to contribute, you should check our GitHub repository: https://github.com/flyingfisch/python-fischbot/')
  
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball, !coin, !say, !ddg, !flood')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball, !coin, !say, !ddg, !flood, !info-contrib')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
