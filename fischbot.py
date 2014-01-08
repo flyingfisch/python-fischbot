@@ -177,7 +177,7 @@ while True:
             result = result.replace("&quot;", '"')
             result = result.replace("&#x28;", "(")
             result = result.replace("&#x29;", ")")
-            // TODO: add more html replacements
+            # TODO: add more html replacements
 
             result = result.replace("\n", "{nl}")
 
