@@ -239,7 +239,7 @@ while True:
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
             send2chan(responses[random.randint(0, len(responses) - 1)])
          
-        elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and data.find('!') == -1 and data.find(channel) != -1:
+        elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1:
             send2chan('I\'m popular :blush: ')
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
