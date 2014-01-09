@@ -132,7 +132,7 @@ while True:
             if hashlib.sha1(passhash).hexdigest() == '32e6c5c2ad23db90ac331bd7a4995a9f50d1f892' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
                 irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
             else:
-                send2chan('Could not op' + data.split(' ')[5])
+                send2chan('Could not op ' + data.split(' ')[5])
             
 
         if atbegin('test', data):
@@ -239,7 +239,7 @@ while True:
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
             send2chan(responses[random.randint(0, len(responses) - 1)])
          
-        elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
+        elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and data.find('!') == -1 and data.find(channel) != -1:
             send2chan('I\'m popular :blush: ')
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
