@@ -8,6 +8,7 @@ import time
 import urllib2
 import os
 import subprocess
+import hashlib
  
 def send2chan(msg):
     try:
@@ -59,7 +60,7 @@ try:
 except:
     port = 6667
  
-version = '0.0.6'
+version = '0.0.7'
 whyphrases = ('recursive', 'Casimo', 'flyingfisch', 'Sorunome', 'racecar', '... just because. ok?')
 responses = ('What is it like to live \'IRL\'? Is it nice?', 'BOOOOOOOO!!!!', 'Oh yeah!', 'Certainly', 'the ceiling', 'no', 'yes', 'do you like me?', 'who are you?', 'why?', 'how so?', 'of course.', 'no problem, right away', 'i\'m getting onto that...', 'maybe', 'possibly', 'never', 'nope', 'TI--', 'That is so old news.', 'You expect me to answer to that?', 'Casio is awesome.', ':)', ':(', '>.>')
 hiphrases = ('hi', 'sup?', 'heya!', 'BOOO!', 'you are going to be so sorry you said that...')
@@ -100,10 +101,7 @@ print '************************* Received MOTD *************************'
  
 # join after MOTD
 irc.send('JOIN ' + channel + '\r\n')
- 
-# login and op flyingfisch
-if network == 'irc.afternet.org':
-    irc.send('PRIVMSG X3 :auth fischbot ciavaz84\r\n')
+    
  
  
 while True:
@@ -129,8 +127,22 @@ while True:
         irc.send('JOIN ' + channel + '\r\n')
  
     if data.find('PRIVMSG') != -1:
+        if atbegin('!op', data):
+            passhash = data.split(' ')[4]
+            if hashlib.sha1(passhash).hexdigest() == '32e6c5c2ad23db90ac331bd7a4995a9f50d1f892' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
+                irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
+            else:
+                send2chan('Could not op' + data.split(' ')[5])
+            
+
         if atbegin('test', data):
             send2chan('Test received.')
+
+        if atbegin('!blame', data):
+            send2chan('It\'s Casimo\'s fault!')
+
+        if atbegin('!authfischbot', data):
+            irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
  
         elif atbegin('!8ball', data):
             send2chan(_8ball[random.randint(0, len(_8ball) - 1)])
@@ -241,7 +253,7 @@ while True:
             send2chan('If you want to contribute, you should check our GitHub repository: https://github.com/flyingfisch/python-fischbot/')
  
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball, !coin, !say, !ddg, !flood, !info-contrib')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
