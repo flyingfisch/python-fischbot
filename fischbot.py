@@ -219,7 +219,7 @@ while True:
             send2chan(nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself')
  
         elif data.lower().find('yay') != -1:
-            send2chan(':w00t!')
+            send2chan('w00t!')
  
         elif data.lower().find('simon lothar') != -1:
             send2chan('"I\'ll be back!"')
