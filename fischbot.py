@@ -9,6 +9,7 @@ import urllib2
 import os
 import subprocess
 import hashlib
+import datetime
  
 def send2chan(msg):
     try:
@@ -66,7 +67,8 @@ responses = ('What is it like to live \'IRL\'? Is it nice?', 'BOOOOOOOO!!!!', 'O
 hiphrases = ('hi', 'sup?', 'heya!', 'BOOO!', 'you are going to be so sorry you said that...')
 _8ball = ("It is certain","It is decidedly so","Without a doubt","Yes - Definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy, try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 questionphrases = responses + _8ball
- 
+iscontrolled = False
+
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  
@@ -115,6 +117,12 @@ while True:
  
 #    if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'JOIN' and data.split('!')[0][1:] != nick:
 #        send2chan('Heya ' + data.split('!')[0][1:] + '!')
+
+    #check if being controlled
+    if iscontrolled:
+        timediff = datetime.datetime.now() - iscontrolled
+        if timediff.seconds > 60:
+            iscontrolled = False
  
     if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN':
         send2chan('Anybody here?')
@@ -164,6 +172,10 @@ while True:
                 message = re.sub('!say', '', ' '.join(data.split(' ')[4:]).strip())
             except:
                 message = 'You didn\'t tell me what to say!'
+
+            # if being controlled through /msg
+            if(data.find(channel) == -1):
+                iscontrolled = datetime.datetime.now()
  
             send2chan(message)
  
@@ -223,7 +235,13 @@ while True:
  
         elif data.lower().find('simon lothar') != -1:
             send2chan('"I\'ll be back!"')
- 
+    
+        elif data.lower().find('controlled') != -1 and data.find(nick) != -1:
+            if iscontrolled:
+                timediff = datetime.datetime.now() - iscontrolled
+                send2chan('I was controlled ' + str(timediff.seconds) + ' seconds ago.')
+            else:
+                send2chan('Me? Controlled? No way!')
  
         elif data.lower().find('are you sure') != -1:
             send2chan('of course I\'m sure!')
@@ -239,7 +257,7 @@ while True:
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
             send2chan(responses[random.randint(0, len(responses) - 1)])
          
-        elif data.find(nick) != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1:
+        elif data.find(" " + nick + " ") != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1:
             send2chan('I\'m popular :blush: ')
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
