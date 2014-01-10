@@ -129,7 +129,7 @@ while True:
     if data.find('PRIVMSG') != -1:
         if atbegin('!op', data):
             passhash = data.split(' ')[4]
-            if hashlib.sha1(passhash).hexdigest() == '32e6c5c2ad23db90ac331bd7a4995a9f50d1f892' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
+            if hashlib.sha1(passhash).hexdigest() == 'b83dc58d7b5bb128b2834870f122b732a1c4ff06' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
                 irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
             else:
                 send2chan('Could not op ' + data.split(' ')[5])
