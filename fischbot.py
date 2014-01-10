@@ -149,8 +149,8 @@ while True:
  
         elif atbegin('!flood', data):
             send2chan('Flooding is wrong. Flooding gets bots banned. I will never flood.')
-            while 1:
-                send2chan('Casimo was here')
+#            while 1:
+#                send2chan('Casimo was here')
  
         elif atbegin('!coin', data):
             if random.randint(0,1) == 1:
