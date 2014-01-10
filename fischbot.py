@@ -147,7 +147,7 @@ while True:
             send2chan('Test received.')
 
         if atbegin('!blame', data):
-            send2chan('It\'s Casimo\'s fault!')
+            send2chan('It\'s flyingfisch\'s fault!')
 
         if atbegin('!authfischbot', data):
             irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
