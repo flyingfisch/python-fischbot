@@ -186,6 +186,7 @@ while True:
                 query = ''
  
             query = query.replace(' ', '+')
+            query = re.sub(r'!.*\>', '', query)
  
             send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
 
