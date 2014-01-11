@@ -184,16 +184,20 @@ while True:
             send2chan(message)
 
         elif atbegin('!ducky', data):
+            allelsefails = True
+
             try:
-                query = re.sub('!ddg', '', ' '.join(data.split(' ')[4:]).strip())
+                query = re.sub('!ducky', '', ' '.join(data.split(' ')[4:]).strip())
             except:
                 query = ''
+
+            queryoriginal = query
  
             query = query.replace(' ', '+')
             query = re.sub(r'!.*\>', '', query)
 
             try:
-                url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
+                url = urllib2.urlopen('http://api.duckduckgo.com/?q=' + query + '&format=json&no_redirect=1')
             except:
                 e = sys.ecx_info()[0]
                 send2chan('An error occured :' + e.code)
@@ -206,6 +210,7 @@ while True:
                 result = d['RelatedTopics'][0]['FirstURL']
                 result.replace('u', '')
                 result.replace('\'', '')
+                allelsefails = False
             except:
                 pass
 
@@ -213,7 +218,16 @@ while True:
                 result = d['RelatedTopics'][0]['Topics'][0]['FirstURL']
                 result.replace('u', '')
                 result.replace('\'', '')
+                allelsefails = False
             except:
+                pass
+
+            if allelsefails:
+                try:
+                    url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
+                except:
+                    e = sys.ecx_info()[0]
+                    send2chan('An error occured :' + e.code)
                 result = d["Redirect"]
 
             send2chan('[First DDG Result for ' + query + '] ' + result)
