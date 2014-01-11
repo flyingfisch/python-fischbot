@@ -10,6 +10,7 @@ import os
 import subprocess
 import hashlib
 import datetime
+import json
  
 def send2chan(msg):
     try:
@@ -181,6 +182,37 @@ while True:
                 iscontrolled = datetime.datetime.now()
  
             send2chan(message)
+
+        elif atbegin('!ducky', data):
+            try:
+                query = re.sub('!ddg', '', ' '.join(data.split(' ')[4:]).strip())
+            except:
+                query = ''
+ 
+            query = query.replace(' ', '+')
+            query = re.sub(r'!.*\>', '', query)
+
+            url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
+            result = url.read()
+            url.close()
+
+            d = json.loads(result)
+            try:
+                result = d['RelatedTopics'][0]['FirstURL']
+                result.replace('u', '')
+                result.replace('\'', '')
+            except:
+                pass
+
+            try:
+                result = d['RelatedTopics'][0]['Topics'][0]['FirstURL']
+                result.replace('u', '')
+                result.replace('\'', '')
+            except:
+                result = d["Redirect"]
+
+            send2chan('[First DDG Result for ' + query + '] ' + result)
+
  
         elif atbegin('!ddg', data):
             try:
