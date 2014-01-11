@@ -230,7 +230,7 @@ while True:
                     send2chan('An error occured :' + e.code)
                 result = d["Redirect"]
 
-            send2chan('[First DDG Result for ' + query + '] ' + result)
+            send2chan('[First DDG Result for ' + queryoriginal + '] ' + result)
 
  
         elif atbegin('!ddg', data):
