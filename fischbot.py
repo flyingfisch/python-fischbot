@@ -192,7 +192,12 @@ while True:
             query = query.replace(' ', '+')
             query = re.sub(r'!.*\>', '', query)
 
-            url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
+            try:
+                url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
+            except:
+                e = sys.ecx_info()[0]
+                send2chan('An error occured :' + e.code)
+
             result = url.read()
             url.close()
 
@@ -226,7 +231,7 @@ while True:
             send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
 
             try:
-                url = urllib2.urlopen("https://duckduckgo.com/html/?q=" + query + "&t=bot")
+                url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
             except:
                 e = sys.ecx_info()[0]
                 send2chan('An error occured :' + e.code)
@@ -234,29 +239,29 @@ while True:
             result = url.read()
             url.close()
 
-            result = result.replace("&quot;", '"')
-            result = result.replace("&#x28;", "(")
-            result = result.replace("&#x29;", ")")
-            # TODO: add more html replacements
+            d = json.loads(result)
 
-            result = result.replace("\n", "{nl}")
+            # try to send instant answers to chat
+            try:
+                send2chan(d['RelatedTopics'][0]['Text'])
+            except:
+                pass
 
-            result = re.sub(r'<div id="zero_click_image">.*?</div>', "", result)
+            try:
+                send2chan(d['RelatedTopics'][0]['Topics'][0]['Text'])
+            except:
+                pass
 
-            zeroclick = re.findall(r'<div class="zero-click-result".*?</div>', result)
-            if len(zeroclick) > 0:
-                zeroclick = zeroclick[0]
+            # try to send definition to chat
+            if len(d['Definition']) > 0:
+                send2chan('Definition: ' + d['Definition'])
+                time.sleep(.5)
+            if len(d['DefinitionSource']) > 0:
+                send2chan('Source: ' + d['DefinitionSource'])
 
-                zeroclick = zeroclick.replace('<div class="zero-click-result" id=zero_click_abstract">', '')
-                zeroclick = zeroclick.replace('</div>', '')
-
-                zeroclick = re.sub(r"<.*?>", "", zeroclick)
-
-                for string in zeroclick.split("{nl}"):
-                    string = string.replace("{nl}", "")
-                    string = string.strip()
-                    if len(string) > 0:
-                        send2chan(string)
+            # try to send redirect for !bangs
+            if len(d['Redirect']) > 0:
+                send2chan('!Bang redirect: ' + d['Redirect'])
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
@@ -307,7 +312,7 @@ while True:
             send2chan('If you want to contribute, you should check our GitHub repository: https://github.com/flyingfisch/python-fischbot/')
  
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !ducky <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
