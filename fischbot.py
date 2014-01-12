@@ -70,6 +70,7 @@ hiphrases = ('hi', 'sup?', 'heya!', 'BOOO!', 'you are going to be so sorry you s
 _8ball = ("It is certain","It is decidedly so","Without a doubt","Yes - Definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy, try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 questionphrases = responses + _8ball
 iscontrolled = False
+telldata = {}
 
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -135,6 +136,30 @@ while True:
         timediff = datetime.datetime.now() - iscontrolled
         if timediff.seconds > 60:
             iscontrolled = False
+
+    #check if should send messages to anybody (!tell)
+    if data.find('JOIN') != -1:
+        name = data.split('!')[0].replace(':', '')
+        try:
+            l = list(telldata[name])
+            # if only a few messages, output to channel. otherwise, /msg them
+            if len(l) > 0 and len(l) < 6:
+                send2 = channel
+                send2chan(name + ': Here are some messages that have been sent to you with !tell while you were offline.')
+            elif len(l) > 0:
+                send2 = name
+                send2chan(name + ': you have more than 5 (' + str(len(l)) + ') messages waiting for you. They will be private messaged in a moment.')
+
+            for msglist in l:
+                irc.send('PRIVMSG ' + send2 + ' :From ' + msglist[1] + ': ' + msglist[0] + '\r\n')
+                print 'Sending: ' + 'PRIVMSG ' + send2 + ' :From ' + msglist[1] + ': ' + msglist[0] + '\r\n'
+                time.sleep(1)
+
+            #delete messages for that user
+            telldata[name] = ()
+
+        except:
+            pass
  
     if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN':
         send2chan('Anybody here?')
@@ -180,6 +205,24 @@ while True:
                 print "Sending: " + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
             except:
                 send2chan('Slap who?')
+
+        if atbegin('!tell', data):
+            #try:
+            try:
+                telldata[data.split(' ')[4].strip()]
+            except:
+                telldata[data.split(' ')[4].strip()] = ()
+
+            l = list(telldata[data.split(' ')[4].strip()])
+            msgtosend = ' '.join(data.split(' ')[5:]).strip()
+
+            l2 = (msgtosend, data.split('!')[0].replace(':', ''))
+            l.append(l2)
+
+            telldata[data.split(' ')[4].strip()] = l
+            print 'Will send ' + msgtosend + ' to ' + data.split(' ')[4].strip() + ' when he arrives.'
+            #except:
+            #    send2chan('You are either missing the nick of the person you want to tell, or the message you want to send.')
 
         if atbegin('!authfischbot', data):
             irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
@@ -304,7 +347,7 @@ while True:
             send2chan('If you want to contribute, you should check our GitHub repository: https://github.com/flyingfisch/python-fischbot/')
  
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
