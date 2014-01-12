@@ -173,6 +173,14 @@ while True:
                 else:
                     send2chan('It\'s Casimo\'s fault!')
 
+        if atbegin('!slap', data):
+            try:
+                msg = "\x01ACTION slaps " + data.split(' ')[4].strip() + " around with a large fisch.\x01"
+                irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+                print "Sending: " + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+            except:
+                send2chan('Slap who?')
+
         if atbegin('!authfischbot', data):
             irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
  
