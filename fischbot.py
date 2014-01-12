@@ -79,7 +79,9 @@ irc.connect((network, int(port)))
 irc.recv(4096)
 irc.send('NICK ' + nick + '\r\n')
 irc.send('USER fischbot fischbot fischbot :fischbot IRC\r\n')
- 
+
+nicknum = 2
+
 while True:
     data = irc.recv(4096)
     print data
@@ -96,6 +98,14 @@ while True:
         cookie = raw_input('Input cookie')
         irc.send('PONG :' + cookie + '\r\n')
  
+    # if nick is in use, try another
+    if data.find('433') != -1:
+        nick = nick + str(nicknum)
+        print 'Trying different nick: ' + nick
+        irc.send('NICK ' + nick + '\r\n')
+        irc.send('USER fischbot fischbot fischbot :fischbot IRC\r\n')
+        nicknum = nicknum + 1
+
     # handle pings and pongs
     if data.find('PING') != -1:
         irc.send('PONG ' + data.split()[1] + '\r\n')
@@ -103,8 +113,8 @@ while True:
 print '************************* Received MOTD *************************'
  
 # join after MOTD
+print 'Joining ' + channel
 irc.send('JOIN ' + channel + '\r\n')
-    
  
  
 while True:
