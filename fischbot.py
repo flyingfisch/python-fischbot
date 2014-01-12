@@ -338,6 +338,9 @@ while True:
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
             send2chan('You make me cry. :\'(')
+
+        elif atbegin('!info-bugs', data):
+            send2chan('Report bugs or suggest improvements by filing an issue here: https://github.com/flyingfisch/python-fischbot/issues')
  
         elif atbegin('!info-contrib', data):
             send2chan('If you want to contribute, you should check my GitHub repository: https://github.com/flyingfisch/python-fischbot/')
