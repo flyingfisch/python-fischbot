@@ -167,7 +167,7 @@ while True:
     if data.find('naib864 entered the room') != -1:
         send2chan('Anybody here?')
  
-    if data.split()[1] == 'KICK':
+    if data.split()[1] == 'KICK' and data.find(nick) != -1:
         time.sleep(10)
         irc.send('JOIN ' + channel + '\r\n')
  
