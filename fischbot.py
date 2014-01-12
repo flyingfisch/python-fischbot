@@ -326,7 +326,7 @@ while True:
             send2chan('If you want to contribute, you should check our GitHub repository: https://github.com/flyingfisch/python-fischbot/')
  
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !ducky <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
