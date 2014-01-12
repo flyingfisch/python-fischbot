@@ -183,56 +183,6 @@ while True:
  
             send2chan(message)
 
-"""        elif atbegin('!ducky', data):
-            allelsefails = True
-
-            try:
-                query = re.sub('!ducky', '', ' '.join(data.split(' ')[4:]).strip())
-            except:
-                query = ''
-
-            queryoriginal = query
- 
-            query = query.replace(' ', '+')
-            query = re.sub(r'!.*\>', '', query)
-
-            try:
-                url = urllib2.urlopen('http://api.duckduckgo.com/?q=' + query + '&format=json&no_redirect=1')
-            except:
-                e = sys.ecx_info()[0]
-                send2chan('An error occured :' + e.code)
-
-            result = url.read()
-            url.close()
-
-            d = json.loads(result)
-            try:
-                result = d['RelatedTopics'][0]['FirstURL']
-                result.replace('u', '')
-                result.replace('\'', '')
-                allelsefails = False
-            except:
-                pass
-
-            try:
-                result = d['RelatedTopics'][0]['Topics'][0]['FirstURL']
-                result.replace('u', '')
-                result.replace('\'', '')
-                allelsefails = False
-            except:
-                pass
-
-            if allelsefails:
-                try:
-                    url = urllib2.urlopen('http://api.duckduckgo.com/?q=!ducky+' + query + '&format=json&no_redirect=1')
-                except:
-                    e = sys.ecx_info()[0]
-                    send2chan('An error occured :' + e.code)
-                result = d["Redirect"]
-
-            send2chan('[First DDG Result for ' + queryoriginal + '] ' + result)"""
-
- 
         elif atbegin('!ddg', data):
             try:
                 query = re.sub('!ddg', '', ' '.join(data.split(' ')[4:]).strip())
