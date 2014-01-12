@@ -15,6 +15,7 @@ import json
 def send2chan(msg):
     try:
         irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+        print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
     except:
         print("Connection error, trying to restart")
 
@@ -163,10 +164,14 @@ while True:
             send2chan('Test received.')
 
         if atbegin('!blame', data):
-            if random.randint(0, 1) == 1:
-                send2chan('It\'s flyingfisch\'s fault!')
-            else:
-                send2chan('It\'s Casimo\'s fault!')
+            try:
+                message = 'It\'s ' + data.split(' ')[4].strip() + '\'s fault!'
+                send2chan(message)
+            except:
+                if random.randint(0, 1) == 1:
+                    send2chan('It\'s flyingfisch\'s fault!')
+                else:
+                    send2chan('It\'s Casimo\'s fault!')
 
         if atbegin('!authfischbot', data):
             irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
