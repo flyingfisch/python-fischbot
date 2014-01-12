@@ -29,12 +29,12 @@ def send2chan(msg):
         exit(0)
 
 def atbegin(str, line):
-    try:
-        ans = line.split()[4].find(str)
-    except:
-        ans = -1
+    #try:
+    #    ans = line.split()[4].find(str)
+    #except:
+    #    ans = -1
  
-    if line.split()[3].find(str) != -1 or ans != -1:
+    if line.split()[3].find(str) != -1: #or ans != -1:
         return True
     else:
         return False
@@ -150,7 +150,7 @@ while True:
             try:
                 passhash = data.split(' ')[4]
                 data.split(' ')[5]
-                
+
                 if hashlib.sha1(passhash).hexdigest() == 'b83dc58d7b5bb128b2834870f122b732a1c4ff06' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
                     irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
                 else:
