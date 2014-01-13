@@ -161,10 +161,10 @@ while True:
         except:
             pass
  
-    if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN':
+    if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
         send2chan('Anybody here?')
  
-    if data.find('naib864 entered the room') != -1:
+    if data.find('naib864 entered the room') != -1 and random.randint(1,50) == 50:
         send2chan('Anybody here?')
 
     if data.split()[1] == 'KICK' and data.find(nick) != -1:
