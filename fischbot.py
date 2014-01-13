@@ -341,7 +341,7 @@ while True:
 
             # try to send redirect for !bangs
             if len(d['Redirect']) > 0:
-                send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20')))
+                send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
