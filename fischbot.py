@@ -260,6 +260,7 @@ while True:
             except:
                 query = ''
  
+            query = query.replace('+', '%2B')
             query = query.replace(' ', '+')
             query = re.sub(r'!.*\>', '', query)
  
@@ -276,23 +277,55 @@ while True:
 
             d = json.loads(result)
 
-            # try to send instant answers to chat
-            try:
-                send2chan(d['RelatedTopics'][0]['Text'])
-            except:
-                pass
+            # answers for math
+            if len(d['Answer']) > 0:
+                # remove html tags from result
+                send2chan('Answer: ' + re.sub(r'<.*?>', '', d['Answer']))
+                time.sleep(.5)
 
-            try:
-                send2chan(d['RelatedTopics'][0]['Topics'][0]['Text'])
-            except:
-                pass
+            # try to send instant answers to chat
+            
+            for i in (1,2,3):
+                try:
+                    send2chan(d['RelatedTopics'][i]['Text'])
+                    time.sleep(.2)
+                except:
+                    break
+
+            for i in (1,2,3):
+                try:
+                    send2chan(d['RelatedTopics'][i]['Topics'][i]['Text'])
+                    time.sleep(.2)
+                except:
+                    break
 
             # try to send definition to chat
             if len(d['Definition']) > 0:
                 send2chan('Definition: ' + d['Definition'])
-                time.sleep(.5)
+                time.sleep(.2)
             if len(d['DefinitionSource']) > 0:
                 send2chan('Source: ' + d['DefinitionSource'])
+                time.sleep(.2)
+            if len(d['DefinitionURL']) > 0:
+                send2chan('Source: ' + d['DefinitionURL'])
+                time.sleep(.2)
+
+            # Abstract text
+            if len(d['AbstractSource']) > 0:
+                send2chan(d['AbstractSource'] + ': ')
+                time.sleep(.2)
+
+            if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
+                send2chan(d['Abstract'])
+                time.sleep(.2)
+
+            if len(d['AbstractText']) > 0:
+                send2chan(d['AbstractText'])
+                time.sleep(.2)
+
+            if len(d['AbstractURL']) > 0:
+                send2chan(d['AbstractURL'])
+                time.sleep(.2)
 
             # try to send redirect for !bangs
             if len(d['Redirect']) > 0:
