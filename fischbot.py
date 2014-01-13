@@ -319,7 +319,7 @@ while True:
                 send2chan('Source: ' + d['DefinitionSource'])
                 time.sleep(.2)
             if len(d['DefinitionURL']) > 0:
-                send2chan('Source: ' + d['DefinitionURL'])
+                send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
                 time.sleep(.2)
 
             # Abstract text
@@ -336,12 +336,12 @@ while True:
                 time.sleep(.2)
 
             if len(d['AbstractURL']) > 0:
-                send2chan(d['AbstractURL'])
+                send2chan(d['AbstractURL'].replace(' ', '%20')))
                 time.sleep(.2)
 
             # try to send redirect for !bangs
             if len(d['Redirect']) > 0:
-                send2chan('!Bang redirect: ' + d['Redirect'])
+                send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20')))
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
