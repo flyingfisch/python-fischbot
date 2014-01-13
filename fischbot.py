@@ -293,51 +293,51 @@ while True:
             if len(d['Answer']) > 0:
                 # remove html tags from result
                 send2chan('Answer: ' + re.sub(r'<.*?>', '', d['Answer']))
-                time.sleep(.5)
+                time.sleep(1)
 
             # try to send instant answers to chat
             
             for i in (0,1,2):
                 try:
                     send2chan(d['RelatedTopics'][i]['Text'])
-                    time.sleep(.2)
+                    time.sleep(1)
                 except:
                     break
 
             for i in (0,1,2):
                 try:
                     send2chan(d['RelatedTopics'][i]['Topics'][i]['Text'])
-                    time.sleep(.2)
+                    time.sleep(1)
                 except:
                     break
 
             # try to send definition to chat
             if len(d['Definition']) > 0:
                 send2chan('Definition: ' + d['Definition'])
-                time.sleep(.2)
+                time.sleep(1)
             if len(d['DefinitionSource']) > 0:
                 send2chan('Source: ' + d['DefinitionSource'])
-                time.sleep(.2)
+                time.sleep(1)
             if len(d['DefinitionURL']) > 0:
                 send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
-                time.sleep(.2)
+                time.sleep(1)
 
             # Abstract text
             if len(d['AbstractSource']) > 0:
                 send2chan(d['AbstractSource'] + ': ')
-                time.sleep(.2)
+                time.sleep(1)
 
             if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
                 send2chan(d['Abstract'])
-                time.sleep(.2)
+                time.sleep(1)
 
             if len(d['AbstractText']) > 0:
                 send2chan(d['AbstractText'])
-                time.sleep(.2)
+                time.sleep(1)
 
             if len(d['AbstractURL']) > 0:
                 send2chan(d['AbstractURL'].replace(' ', '%20'))
-                time.sleep(.2)
+                time.sleep(1)
 
             # try to send redirect for !bangs
             if len(d['Redirect']) > 0:
@@ -366,7 +366,7 @@ while True:
  
         elif data.lower().find('are you sure') != -1 and data.find(nick) != -1:
             send2chan('of course I\'m sure!')
-            time.sleep(2)
+            time.sleep(1)
             send2chan('hmmph.')
  
         elif data.lower().find('why') != -1 and random.randint(1,50) == 50:
