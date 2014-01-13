@@ -13,10 +13,18 @@ import datetime
 import json
  
 def send2chan(msg):
-    try:
-        irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
-        print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
-    except:
+    print 'Trying to send: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+    for i in range(0, 10):
+        try:
+            irc.send('PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n')
+            print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+            cannotsend = False
+            break
+        except:
+            cannotsend = True
+        time.sleep(1)
+
+    if cannotsend:
         print("Connection error, trying to restart")
 
         for j in range(0, 120):
@@ -167,9 +175,13 @@ while True:
     if data.find('naib864 entered the room') != -1 and random.randint(1,50) == 50:
         send2chan('Anybody here?')
 
-    if data.split()[1] == 'KICK' and data.find(nick) != -1:
-        time.sleep(10)
-        irc.send('JOIN ' + channel + '\r\n')
+    try:
+        if data.split()[1] == 'KICK' and data.find(nick) != -1:
+            time.sleep(10)
+            irc.send('JOIN ' + channel + '\r\n')
+            print 'Kicked, trying to rejoin.'
+    except:
+        pass
  
     if data.find('PRIVMSG') != -1:
         if atbegin('!op', data):
