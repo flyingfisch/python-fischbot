@@ -336,7 +336,7 @@ while True:
                 time.sleep(.2)
 
             if len(d['AbstractURL']) > 0:
-                send2chan(d['AbstractURL'].replace(' ', '%20')))
+                send2chan(d['AbstractURL'].replace(' ', '%20'))
                 time.sleep(.2)
 
             # try to send redirect for !bangs
