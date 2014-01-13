@@ -297,14 +297,14 @@ while True:
 
             # try to send instant answers to chat
             
-            for i in (1,2,3):
+            for i in (0,1,2):
                 try:
                     send2chan(d['RelatedTopics'][i]['Text'])
                     time.sleep(.2)
                 except:
                     break
 
-            for i in (1,2,3):
+            for i in (0,1,2):
                 try:
                     send2chan(d['RelatedTopics'][i]['Topics'][i]['Text'])
                     time.sleep(.2)
