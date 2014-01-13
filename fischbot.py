@@ -166,7 +166,7 @@ while True:
  
     if data.find('naib864 entered the room') != -1:
         send2chan('Anybody here?')
- 
+
     if data.split()[1] == 'KICK' and data.find(nick) != -1:
         time.sleep(10)
         irc.send('JOIN ' + channel + '\r\n')
@@ -319,12 +319,12 @@ while True:
             else:
                 send2chan('Me? Controlled? No way!')
  
-        elif data.lower().find('are you sure') != -1:
+        elif data.lower().find('are you sure') != -1 and data.find(nick) != -1:
             send2chan('of course I\'m sure!')
             time.sleep(2)
             send2chan('hmmph.')
  
-        elif data.lower().find('why') != -1:
+        elif data.lower().find('why') != -1 and random.randint(1,50) == 50:
             send2chan('because ' + whyphrases[random.randint(0, len(whyphrases) - 1)] + '.')
  
         elif data.find(nick) != -1 and (data.find('hi ') != -1 or data.find(' hi') != -1):
@@ -333,7 +333,7 @@ while True:
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
             send2chan(responses[random.randint(0, len(responses) - 1)])
          
-        elif data.find(" " + nick + " ") != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1:
+        elif data.find(" " + nick + " ") != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1  and random.randint(1,50) == 50:
             send2chan('I\'m popular :blush: ')
          
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
