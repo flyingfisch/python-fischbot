@@ -394,7 +394,7 @@ while True:
             send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. I am very good at ping-pong.')
 
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message> !slap <user>')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message> !slap <user>')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
