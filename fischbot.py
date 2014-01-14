@@ -13,11 +13,11 @@ import datetime
 import json
  
 def send2chan(msg):
-    print 'Trying to send: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+    print 'Trying to send: ' + 'PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n'
     for i in range(0, 10):
         try:
             irc.send('PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n')
-            print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+            print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n'
             cannotsend = False
             break
         except:
