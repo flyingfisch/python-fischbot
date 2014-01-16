@@ -190,26 +190,26 @@ while True:
  
     if data.find('PRIVMSG') != -1:
         if atbegin('!op', data):
-            #try:
-            passhash = data.split(' ')[4]
-            data.split(' ')[5]
+            try:
+                passhash = data.split(' ')[4]
+                data.split(' ')[5]
 
-            # open hash file
-            with open(hashfile) as file:
-                hashes = file.readlines()
+                # open hash file
+                with open(hashfile) as file:
+                    hashes = file.readlines()
 
-            authed = False
-            for i in hashes:
-                if hashlib.sha1(passhash).hexdigest() == str(i).strip():
-                    authed = True
+                authed = False
+                for i in hashes:
+                    if hashlib.sha1(passhash).hexdigest() == str(i).strip():
+                        authed = True
 
-            if authed:
-                irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
-            else:
-                send2chan('Could not op ' + data.split(' ')[5].strip() + '. Incorrect password.')
+                if authed:
+                    irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
+                else:
+                    send2chan('Could not op ' + data.split(' ')[5].strip() + '. Incorrect password.')
 
-            #except:
-            #    send2chan('No name/password were provided.')
+            except:
+                send2chan('No name/password were provided.')
             
 
         if atbegin('test', data):
