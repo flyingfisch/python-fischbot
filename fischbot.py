@@ -79,6 +79,7 @@ _8ball = ("It is certain","It is decidedly so","Without a doubt","Yes - Definite
 questionphrases = responses + _8ball
 iscontrolled = False
 telldata = {}
+warned = {}
 
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -237,7 +238,10 @@ while True:
             #    send2chan('You are either missing the nick of the person you want to tell, or the message you want to send.')
 
         if atbegin('!authfischbot', data):
-            irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
+            try:
+                irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
+            except:
+                send2chan('No password provided.')
  
         elif atbegin('!8ball', data):
             send2chan(_8ball[random.randint(0, len(_8ball) - 1)])
