@@ -55,7 +55,9 @@ try:
     nick = sys.argv[1]
 except:
     nick = 'fischbot'
- 
+
+originalnick = nick
+
 try:
     network = sys.argv[2]
 except:
@@ -80,6 +82,8 @@ questionphrases = responses + _8ball
 iscontrolled = False
 telldata = {}
 warned = {}
+# file that hashes are stored to
+hashfile = 'hashes.txt'
 
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -111,7 +115,7 @@ while True:
  
     # if nick is in use, try another
     if data.find('433') != -1:
-        nick = nick + str(nicknum)
+        nick = originalnick + str(nicknum)
         print 'Trying different nick: ' + nick
         irc.send('NICK ' + nick + '\r\n')
         irc.send('USER fischbot fischbot fischbot :fischbot IRC\r\n')
@@ -186,16 +190,26 @@ while True:
  
     if data.find('PRIVMSG') != -1:
         if atbegin('!op', data):
-            try:
-                passhash = data.split(' ')[4]
-                data.split(' ')[5]
+            #try:
+            passhash = data.split(' ')[4]
+            data.split(' ')[5]
 
-                if hashlib.sha1(passhash).hexdigest() == 'b83dc58d7b5bb128b2834870f122b732a1c4ff06' or hashlib.sha1(passhash).hexdigest() == '99e1b035b4be05f67720366aa9f4558b6be8bd02' or hashlib.sha1(passhash).hexdigest() == 'b543bdbd79de29b812331984f2c1a73cccf8ff20':
-                    irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
-                else:
-                    send2chan('Could not op ' + data.split(' ')[5])
-            except:
-                send2chan('No name/password were provided.')
+            # open hash file
+            with open(hashfile) as file:
+                hashes = file.readlines()
+
+            authed = False
+            for i in hashes:
+                if hashlib.sha1(passhash).hexdigest() == str(i).strip():
+                    authed = True
+
+            if authed:
+                irc.send('MODE ' + channel + ' +o ' + data.split(' ')[5] + '\r\n')
+            else:
+                send2chan('Could not op ' + data.split(' ')[5].strip() + '. Incorrect password.')
+
+            #except:
+            #    send2chan('No name/password were provided.')
             
 
         if atbegin('test', data):
