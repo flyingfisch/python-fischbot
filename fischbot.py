@@ -217,7 +217,7 @@ while True:
 
         if atbegin('!blame', data):
             try:
-                message = 'It\'s ' + data.split(' ')[4:].strip() + '\'s fault!'
+                message = 'It\'s ' + ' '.join(data.split(' ')[4:]).strip() + '\'s fault!'
                 send2chan(message)
             except:
                 if random.randint(0, 1) == 1:
