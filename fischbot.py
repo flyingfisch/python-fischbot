@@ -82,6 +82,9 @@ questionphrases = responses + _8ball
 iscontrolled = False
 telldata = {}
 warned = {}
+kickwords = ('f*', 'fuck')
+badwords = ('damn', 'penis', 'ass', 'arse', )
+badwordsnocaps = ('dick', 'god')
 # file that hashes are stored to
 hashfile = 'hashes.txt'
 
@@ -285,81 +288,87 @@ while True:
             send2chan(message)
 
         elif atbegin('!ddg', data):
+            noquery = False
             try:
                 query = re.sub('!ddg', '', ' '.join(data.split(' ')[4:]).strip())
             except:
                 query = ''
- 
-            query = query.replace('+', '%2B')
-            query = query.replace(' ', '+')
-            query = re.sub(r'!.*\>', '', query)
- 
-            send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
 
-            try:
-                url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
-            except:
-                e = sys.ecx_info()[0]
-                send2chan('An error occured :' + e.code)
+            if query == '' or query == ' ':
+                send2chan('http://ddg.gg/')
+                noquery = True
             
-            result = url.read()
-            url.close()
+            if not noquery:
+                query = query.replace('+', '%2B')
+                query = query.replace(' ', '+')
+                query = re.sub(r'!.*\>', '', query)
+     
+                send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
 
-            d = json.loads(result)
-
-            # answers for math
-            if len(d['Answer']) > 0:
-                # remove html tags from result
-                send2chan('Answer: ' + re.sub(r'<.*?>', '', d['Answer']))
-                time.sleep(1)
-
-            # try to send instant answers to chat
-            
-            for i in (0,1,2):
                 try:
-                    send2chan(d['RelatedTopics'][i]['Text'])
-                    time.sleep(1)
+                    url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
                 except:
-                    break
+                    e = sys.ecx_info()[0]
+                    send2chan('An error occured :' + e.code)
+                
+                result = url.read()
+                url.close()
 
-            for i in (0,1,2):
-                try:
-                    send2chan(d['RelatedTopics'][i]['Topics'][i]['Text'])
+                d = json.loads(result)
+
+                # answers for math
+                if len(d['Answer']) > 0:
+                    # remove html tags from result
+                    send2chan('Answer: ' + re.sub(r'<.*?>', '', d['Answer']))
                     time.sleep(1)
-                except:
-                    break
 
-            # try to send definition to chat
-            if len(d['Definition']) > 0:
-                send2chan('Definition: ' + d['Definition'])
-                time.sleep(1)
-            if len(d['DefinitionSource']) > 0:
-                send2chan('Source: ' + d['DefinitionSource'])
-                time.sleep(1)
-            if len(d['DefinitionURL']) > 0:
-                send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
-                time.sleep(1)
+                # try to send instant answers to chat
+                
+                for i in (0,1,2):
+                    try:
+                        send2chan(d['RelatedTopics'][i]['Text'])
+                        time.sleep(1)
+                    except:
+                        break
 
-            # Abstract text
-            if len(d['AbstractSource']) > 0:
-                send2chan(d['AbstractSource'] + ': ')
-                time.sleep(1)
+                for i in (0,1,2):
+                    try:
+                        send2chan(d['RelatedTopics'][i]['Topics'][i]['Text'])
+                        time.sleep(1)
+                    except:
+                        break
 
-            if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
-                send2chan(d['Abstract'])
-                time.sleep(1)
+                # try to send definition to chat
+                if len(d['Definition']) > 0:
+                    send2chan('Definition: ' + d['Definition'])
+                    time.sleep(1)
+                if len(d['DefinitionSource']) > 0:
+                    send2chan('Source: ' + d['DefinitionSource'])
+                    time.sleep(1)
+                if len(d['DefinitionURL']) > 0:
+                    send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
+                    time.sleep(1)
 
-            if len(d['AbstractText']) > 0:
-                send2chan(d['AbstractText'])
-                time.sleep(1)
+                # Abstract text
+                if len(d['AbstractSource']) > 0:
+                    send2chan(d['AbstractSource'] + ': ')
+                    time.sleep(1)
 
-            if len(d['AbstractURL']) > 0:
-                send2chan(d['AbstractURL'].replace(' ', '%20'))
-                time.sleep(1)
+                if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
+                    send2chan(d['Abstract'])
+                    time.sleep(1)
 
-            # try to send redirect for !bangs
-            if len(d['Redirect']) > 0:
-                send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
+                if len(d['AbstractText']) > 0:
+                    send2chan(d['AbstractText'])
+                    time.sleep(1)
+
+                if len(d['AbstractURL']) > 0:
+                    send2chan(d['AbstractURL'].replace(' ', '%20'))
+                    time.sleep(1)
+
+                # try to send redirect for !bangs
+                if len(d['Redirect']) > 0:
+                    send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
