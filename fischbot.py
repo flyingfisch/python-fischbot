@@ -13,13 +13,23 @@ import datetime
 import json
  
 def send2chan(msg):
-    print 'Trying to send: ' + 'PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n'
     for i in range(0, 10):
         try:
             irc.send('PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n')
             print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg.encode('utf-8') + '\r\n'
             cannotsend = False
             break
+        except UnicodeDecodeError:
+            try:
+                irc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+                print 'Sending: ' + 'PRIVMSG ' + channel + ' :' + msg + '\r\n'
+                cannotsend = False
+                break
+            except:
+                irc.send('PRIVMSG ' + channel + ' :Hmm. Stop trying to kill me with the unicode, dude. Seriously.\r\n')
+                print 'Could not send last message\r\n'
+                cannotsend = False
+                break
         except:
             cannotsend = True
         time.sleep(1)
