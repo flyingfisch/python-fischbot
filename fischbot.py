@@ -237,22 +237,22 @@ while True:
                 send2chan('Slap who?')
 
         if atbegin('!tell', data):
-            #try:
             try:
-                telldata[data.split(' ')[4].strip()]
+                try:
+                    telldata[data.split(' ')[4].strip()]
+                except:
+                    telldata[data.split(' ')[4].strip()] = ()
+
+                l = list(telldata[data.split(' ')[4].strip()])
+                msgtosend = ' '.join(data.split(' ')[5:]).strip()
+
+                l2 = (msgtosend, data.split('!')[0].replace(':', ''))
+                l.append(l2)
+
+                telldata[data.split(' ')[4].strip()] = l
+                print 'Will send ' + msgtosend + ' to ' + data.split(' ')[4].strip() + ' when he arrives.'
             except:
-                telldata[data.split(' ')[4].strip()] = ()
-
-            l = list(telldata[data.split(' ')[4].strip()])
-            msgtosend = ' '.join(data.split(' ')[5:]).strip()
-
-            l2 = (msgtosend, data.split('!')[0].replace(':', ''))
-            l.append(l2)
-
-            telldata[data.split(' ')[4].strip()] = l
-            print 'Will send ' + msgtosend + ' to ' + data.split(' ')[4].strip() + ' when he arrives.'
-            #except:
-            #    send2chan('You are either missing the nick of the person you want to tell, or the message you want to send.')
+                send2chan('You are either missing the nick of the person you want to tell, or the message you want to send.')
 
         if atbegin('!authfischbot', data):
             try:
