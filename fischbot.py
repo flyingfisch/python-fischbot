@@ -373,10 +373,11 @@ while True:
         elif atbegin('!intro', data) and len(data) > 3:
             try:
                 nickToSendTo = re.sub('!intro', '', ' '.join(data.split(' ')[4:]).strip())
+                send2chan(nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself')
             except:
-                nickToSendTo = ''
+                send2chan('You didn\'t tell me who to introduce!')
  
-            send2chan(nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself')
+            
  
         elif data.lower().find('yay') != -1:
             send2chan('w00t!')
@@ -418,7 +419,7 @@ while True:
             send2chan('If you want to contribute, you should check my GitHub repository: https://github.com/flyingfisch/python-fischbot/')
 
         elif atbegin('!info', data):
-            send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. I am very good at ping-pong.')
+            send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. Information about contributing can be obtained with !info-contrib. For information on how to report bugs, type !info-bugs. I am very good at ping-pong.')
 
         elif atbegin('!help', data):
             send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message> !slap <user>')
