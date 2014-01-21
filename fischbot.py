@@ -92,7 +92,7 @@ questionphrases = responses + _8ball
 iscontrolled = False
 telldata = {}
 warned = {}
-kickwords = ('f*', 'fuck', 'penis',)
+kickwords = ('f*', 'fuck', 'penis', 'wtf')
 badwords = ('damn', 'ass', 'arse', '@ss', '*ss')
 badwordsnocaps = ('dick', 'god')
 # filenames
@@ -196,7 +196,7 @@ while True:
 
         bad = False
         for badname in blacklist:
-            if name.lower() == badname.lower():
+            if name.lower() == badname.strip().lower():
                 bad = True
 
         if not bad:
