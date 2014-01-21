@@ -152,11 +152,11 @@ while True:
     print data
  
     # commands
-#    if (data.split('!')[0].find('fisch') != -1 or data.split('!')[0].find('casimo') != -1) and data.split()[1] == 'QUIT':
+#    if (name.find('fisch') != -1 or name.find('casimo') != -1) and data.split()[1] == 'QUIT':
 #        send2chan('Oh, don\'t leave me little buddy! I need you, and you need me!')
  
-#    if data.split('!')[0].find('fisch') != -1 and data.split()[1] == 'JOIN' and data.split('!')[0][1:] != nick:
-#        send2chan('Heya ' + data.split('!')[0][1:] + '!')
+#    if name.find('fisch') != -1 and data.split()[1] == 'JOIN' and name[1:] != nick:
+#        send2chan('Heya ' + name[1:] + '!')
 
     #check if being controlled
     if iscontrolled:
@@ -203,7 +203,7 @@ while True:
             irc.send('MODE ' + channel + ' +v ' + name + '\r\n')
 
  
-    if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
+    if name.find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
         send2chan('Anybody here?')
  
     if data.find('naib864 entered the room') != -1 and random.randint(1,50) == 50:
@@ -218,6 +218,44 @@ while True:
         pass
  
     if data.find('PRIVMSG') != -1:
+        name = data.split('!')[0].replace(':', '')
+        # check for bad words
+        for badword in kickwords:
+            if data.find(badword) != -1:
+                irc.send('KICK ' + channel + ' ' + name + ' Extreme profanity \r\n')
+                print 'KICK ' + channel + ' ' + name + ' Extreme profanity \r\n'
+                warned[name] = 0
+                break
+
+        for badword in badwords:
+            if data.lower().find(badword.lower()) != -1:
+                try:
+                    warned[name] += 1
+                    if warned[name] > 3:
+                        irc.send('KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n')
+                        print 'KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n'
+                        warned[name] = 0
+                    send2chan(name + ': Disallowed word. Warning #' + str(warned[name]))
+                    
+                except:
+                    send2chan(name + ': Disallowed word. Warning #1')
+                    warned[name] = 1
+
+        for badword in badwordsnocaps:
+            if data.find(badword) != -1:
+                try:
+                    warned[name] += 1
+                    if warned[name] > 3:
+                        irc.send('KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n')
+                        print 'KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n'
+                        warned[name] = 0
+                    send2chan(name + ': Disallowed word. Warning #' + str(warned[name]))
+                except:
+                    send2chan(name + ': Disallowed word. Warning #1')
+                    warned[name] = 1
+
+
+        # check for commands
         if atbegin('!op', data):
             try:
                 passhash = data.split(' ')[4]
@@ -274,7 +312,7 @@ while True:
                 l = list(telldata[data.split(' ')[4].strip()])
                 msgtosend = ' '.join(data.split(' ')[5:]).strip()
 
-                l2 = (msgtosend, data.split('!')[0].replace(':', ''))
+                l2 = (msgtosend, name.replace(':', ''))
                 l.append(l2)
 
                 telldata[data.split(' ')[4].strip()] = l
