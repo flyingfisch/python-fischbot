@@ -92,11 +92,12 @@ questionphrases = responses + _8ball
 iscontrolled = False
 telldata = {}
 warned = {}
-kickwords = ('f*', 'fuck')
-badwords = ('damn', 'penis', 'ass', 'arse', )
+kickwords = ('f*', 'fuck', 'penis',)
+badwords = ('damn', 'ass', 'arse', '@ss', '*ss')
 badwordsnocaps = ('dick', 'god')
-# file that hashes are stored to
+# filenames
 hashfile = 'hashes.txt'
+blacklistfile = 'blacklist.txt'
 
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -163,8 +164,9 @@ while True:
         if timediff.seconds > 60:
             iscontrolled = False
 
-    #check if should send messages to anybody (!tell)
+    
     if data.find('JOIN') != -1:
+        #check if should send messages to anybody (!tell)
         name = data.split('!')[0].replace(':', '')
         try:
             l = list(telldata[name])
@@ -186,6 +188,20 @@ while True:
 
         except:
             pass
+
+        #check if should give voice
+        with open(blacklistfile) as file:
+            blacklist = file.readlines()
+        file.close()
+
+        bad = False
+        for badname in blacklist:
+            if name.lower() == badname.lower():
+                bad = True
+
+        if not bad:
+            irc.send('MODE ' + channel + ' +v ' + name + '\r\n')
+
  
     if data.split('!')[0].find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
         send2chan('Anybody here?')
@@ -210,6 +226,8 @@ while True:
                 # open hash file
                 with open(hashfile) as file:
                     hashes = file.readlines()
+
+                file.close()
 
                 authed = False
                 for i in hashes:
