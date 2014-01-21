@@ -202,7 +202,7 @@ while True:
         if not bad:
             irc.send('MODE ' + channel + ' +v ' + name + '\r\n')
 
- 
+    name = data.split('!')[0].replace(':', '')
     if name.find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
         send2chan('Anybody here?')
  
@@ -228,7 +228,7 @@ while True:
                 break
 
         for badword in badwords:
-            if data.lower().find(badword.lower()) != -1:
+            if data.lower().find(':' + badword.lower()) != -1 or data.lower().find(' ' + badword.lower() + ' ') != -1 or data.lower().find(' ' + badword.lower() + '\r\n') != -1:
                 try:
                     warned[name] += 1
                     if warned[name] > 3:
@@ -242,7 +242,7 @@ while True:
                     warned[name] = 1
 
         for badword in badwordsnocaps:
-            if data.find(badword) != -1:
+            if data.find(':' + badword) != -1 or data.find(' ' + badword + ' ') != -1 or data.find(' ' + badword + '\r\n') != -1:
                 try:
                     warned[name] += 1
                     if warned[name] > 3:
