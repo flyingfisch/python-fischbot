@@ -93,7 +93,7 @@ iscontrolled = False
 telldata = {}
 warned = {}
 kickwords = ('f*', 'fuck', 'penis', 'wtf')
-badwords = ('damn', 'ass', 'arse', '@ss', '*ss')
+badwords = ('damn', 'ass', 'arse', '@ss', '*ss', 'shit', 'sh*')
 badwordsnocaps = ('dick', 'god')
 # filenames
 hashfile = 'hashes.txt'
@@ -320,6 +320,30 @@ while True:
             except:
                 send2chan('You are either missing the nick of the person you want to tell, or the message you want to send.')
 
+        if atbegin('!ret', data):
+            #check if should send messages to anybody (!tell)
+            name = data.split('!')[0].replace(':', '')
+            try:
+                l = list(telldata[name])
+                # if only a few messages, output to channel. otherwise, /msg them
+                if len(l) > 0 and len(l) < 6:
+                    send2 = channel
+                    send2chan(name + ': Here are some messages that have been sent to you with !tell while you were offline.')
+                elif len(l) > 0:
+                    send2 = name
+                    send2chan(name + ': you have more than 5 (' + str(len(l)) + ') messages waiting for you. They will be private messaged in a moment.')
+
+                for msglist in l:
+                    irc.send('PRIVMSG ' + send2 + ' :From ' + msglist[1] + ': ' + msglist[0] + '\r\n')
+                    print 'Sending: ' + 'PRIVMSG ' + send2 + ' :From ' + msglist[1] + ': ' + msglist[0] + '\r\n'
+                    time.sleep(1)
+
+                #delete messages for that user
+                telldata[name] = ()
+
+            except:
+                pass
+
         if atbegin('!authfischbot', data):
             try:
                 irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
@@ -488,7 +512,7 @@ while True:
             send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. Information about contributing can be obtained with !info-contrib. For information on how to report bugs, type !info-bugs. I am very good at ping-pong.')
 
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message> !slap <user>')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
