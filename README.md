@@ -7,6 +7,12 @@ Requires:
 ---------
 socket, sys, re, random, time, urllib2, os, subprocess, hashlib, datetime, json
 
+Required files:
+---------------
+_Unless stated otherwise, newlines separate lists_
+* **hashes.txt:** sha1 hashes of passwords for use of the !op command.
+* **blacklist.txt:** names of users not to be autovoiced.
+
 Commands:
 ---------
 * !intro <name>: Send a message telling <name> to introduce himself on UCF
