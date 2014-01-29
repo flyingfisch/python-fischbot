@@ -342,7 +342,7 @@ while True:
                 telldata[name] = ()
 
             except:
-                pass
+                send2chan(name + ': Hmm... I can\'t seem to find any papers in your file... Yep, looks like there are no messages for you. Sorry.')
 
         if atbegin('!authfischbot', data):
             try:
