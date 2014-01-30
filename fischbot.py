@@ -222,18 +222,18 @@ while True:
         # check for bad words
         for badword in kickwords:
             if data.find(badword) != -1:
-                irc.send('KICK ' + channel + ' ' + name + ' Extreme profanity \r\n')
-                print 'KICK ' + channel + ' ' + name + ' Extreme profanity \r\n'
+                irc.send('KICK ' + channel + ' ' + name + ' Extreme_profanity \r\n')
+                print 'KICK ' + channel + ' ' + name + ' Extreme_profanity \r\n'
                 warned[name] = 0
                 break
 
         for badword in badwords:
-            if data.lower().find(':' + badword.lower()) != -1 or data.lower().find(' ' + badword.lower() + ' ') != -1 or data.lower().find(' ' + badword.lower() + '\r\n') != -1:
+            if data.lower().find(':' + badword.lower() + ' ') != -1 or data.lower().find(' ' + badword.lower() + ' ') != -1 or data.lower().find(' ' + badword.lower() + '\r\n') != -1:
                 try:
                     warned[name] += 1
                     if warned[name] > 3:
-                        irc.send('KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n')
-                        print 'KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n'
+                        irc.send('KICK ' + channel + ' ' + name + ' Profanity._Warned_' + str(warned[name]) + '_times.\r\n')
+                        print 'KICK ' + channel + ' ' + name + ' Profanity._Warned_' + str(warned[name]) + '_times.\r\n'
                         warned[name] = 0
                     send2chan(name + ': Disallowed word. Warning #' + str(warned[name]))
                     
@@ -242,12 +242,12 @@ while True:
                     warned[name] = 1
 
         for badword in badwordsnocaps:
-            if data.find(':' + badword) != -1 or data.find(' ' + badword + ' ') != -1 or data.find(' ' + badword + '\r\n') != -1:
+            if data.find(':' + badword + ' ') != -1 or data.find(' ' + badword + ' ') != -1 or data.find(' ' + badword + '\r\n') != -1:
                 try:
                     warned[name] += 1
                     if warned[name] > 3:
-                        irc.send('KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n')
-                        print 'KICK ' + channel + ' ' + name + ' Profanity. Warned ' + str(warned[name]) + ' times.\r\n'
+                        irc.send('KICK ' + channel + ' ' + name + ' Profanity._Warned_' + str(warned[name]) + '_times.\r\n')
+                        print 'KICK ' + channel + ' ' + name + ' Profanity._Warned_' + str(warned[name]) + '_times.\r\n'
                         warned[name] = 0
                     send2chan(name + ': Disallowed word. Warning #' + str(warned[name]))
                 except:
