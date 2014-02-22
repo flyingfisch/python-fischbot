@@ -475,7 +475,7 @@ while True:
         elif data.lower().find('yay') != -1:
             send2chan('w00t!')
 
-        elif data.lower().find('oops') != -1 or data.lower().find('D:') != -1:
+        elif data.lower().find('oops') != -1 or data.lower().find('d:') != -1:
             send2chan('http://tny.im/bigoops')
  
         elif data.lower().find('simon lothar') != -1:
