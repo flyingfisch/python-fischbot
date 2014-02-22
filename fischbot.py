@@ -366,6 +366,7 @@ while True:
             else:
                 result = 'Tails'
             send2chan(result)
+
  
         elif atbegin('!say', data):
             try:
@@ -473,6 +474,9 @@ while True:
  
         elif data.lower().find('yay') != -1:
             send2chan('w00t!')
+
+        elif data.lower().find('oops') != -1 or data.lower().find('D:') != -1:
+            send2chan('http://tny.im/bigoops')
  
         elif data.lower().find('simon lothar') != -1:
             send2chan('"I\'ll be back!"')
@@ -514,7 +518,7 @@ while True:
             send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. Information about contributing can be obtained with !info-contrib. For information on how to report bugs, type !info-bugs. I am very good at ping-pong.')
 
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret, !bigoops')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
