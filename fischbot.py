@@ -121,13 +121,13 @@ while True:
     if data.find('376') != -1 or data.find('422') != -1:
         break
  
-    if data.find('998') != -1:
-        while data.find('998') != -1:
-            data = irc.recv(4096)
-            print data
+    #if data.find('998') != -1:
+    #    while data.find('998') != -1:
+    #        data = irc.recv(4096)
+    #        print data
  
-        cookie = raw_input('Input cookie')
-        irc.send('PONG :' + cookie + '\r\n')
+    #    cookie = raw_input('Input cookie')
+    #    irc.send('PONG :' + cookie + '\r\n')
  
     # if nick is in use, try another
     if data.find('433') != -1:
@@ -151,8 +151,7 @@ irc.send('JOIN ' + channel + '\r\n')
 while True:
     data = irc.recv (4096)
  
-    if debug:
-        print data
+    print data
  
     # commands
 #    if (name.find('fisch') != -1 or name.find('casimo') != -1) and data.split()[1] == 'QUIT':
