@@ -393,6 +393,38 @@ while True:
                 noquery = True
             
             if not noquery:
+                # try to send redirect for !bangs
+                if len(d['Redirect']) > 0:
+                    send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
+                
+                # try to send definition to chat
+                if len(d['Definition']) > 0:
+                    send2chan('Definition: ' + d['Definition'])
+                    time.sleep(1)
+                if len(d['DefinitionSource']) > 0:
+                    send2chan('Source: ' + d['DefinitionSource'])
+                    time.sleep(1)
+                if len(d['DefinitionURL']) > 0:
+                    send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
+                    time.sleep(1)
+
+                # Abstract text
+                if len(d['AbstractSource']) > 0:
+                    send2chan(d['AbstractSource'] + ': ')
+                    time.sleep(1)
+
+                if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
+                    send2chan(d['Abstract'])
+                    time.sleep(1)
+
+                if len(d['AbstractText']) > 0:
+                    send2chan(d['AbstractText'])
+                    time.sleep(1)
+
+                if len(d['AbstractURL']) > 0:
+                    send2chan(d['AbstractURL'].replace(' ', '%20'))
+                    time.sleep(1)
+
                 query = query.replace('+', '%2B')
                 query = query.replace(' ', '+')
                 query = re.sub(r'!.*\>', '', query)
@@ -431,38 +463,6 @@ while True:
                         time.sleep(1)
                     except:
                         break
-
-                # try to send definition to chat
-                if len(d['Definition']) > 0:
-                    send2chan('Definition: ' + d['Definition'])
-                    time.sleep(1)
-                if len(d['DefinitionSource']) > 0:
-                    send2chan('Source: ' + d['DefinitionSource'])
-                    time.sleep(1)
-                if len(d['DefinitionURL']) > 0:
-                    send2chan('Source: ' + d['DefinitionURL'].replace(' ', '%20'))
-                    time.sleep(1)
-
-                # Abstract text
-                if len(d['AbstractSource']) > 0:
-                    send2chan(d['AbstractSource'] + ': ')
-                    time.sleep(1)
-
-                if len(d['Abstract']) > 0 and d['Abstract'] != d['AbstractText']:
-                    send2chan(d['Abstract'])
-                    time.sleep(1)
-
-                if len(d['AbstractText']) > 0:
-                    send2chan(d['AbstractText'])
-                    time.sleep(1)
-
-                if len(d['AbstractURL']) > 0:
-                    send2chan(d['AbstractURL'].replace(' ', '%20'))
-                    time.sleep(1)
-
-                # try to send redirect for !bangs
-                if len(d['Redirect']) > 0:
-                    send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
  
         elif atbegin('!intro', data) and len(data) > 3:
             try:
