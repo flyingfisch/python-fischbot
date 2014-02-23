@@ -393,10 +393,23 @@ while True:
                 noquery = True
             
             if not noquery:
+                send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
+                
+                try:
+                    url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
+                except:
+                    e = sys.ecx_info()[0]
+                    send2chan('An error occured :' + e.code)
+                
+                result = url.read()
+                url.close()
+
+                d = json.loads(result)
+
                 # try to send redirect for !bangs
                 if len(d['Redirect']) > 0:
                     send2chan('!Bang redirect: ' + d['Redirect'].replace(' ', '%20'))
-                
+
                 # try to send definition to chat
                 if len(d['Definition']) > 0:
                     send2chan('Definition: ' + d['Definition'])
@@ -428,19 +441,6 @@ while True:
                 query = query.replace('+', '%2B')
                 query = query.replace(' ', '+')
                 query = re.sub(r'!.*\>', '', query)
-     
-                send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
-
-                try:
-                    url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
-                except:
-                    e = sys.ecx_info()[0]
-                    send2chan('An error occured :' + e.code)
-                
-                result = url.read()
-                url.close()
-
-                d = json.loads(result)
 
                 # answers for math
                 if len(d['Answer']) > 0:
