@@ -151,7 +151,7 @@ irc.send('JOIN ' + channel + '\r\n')
 while True:
     data = irc.recv (4096)
  
-    if data != '\r\n' and data != ' \r\n':
+    if data and data[0].isalpha():
         print data
  
     # commands
