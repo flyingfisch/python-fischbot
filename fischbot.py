@@ -151,7 +151,8 @@ irc.send('JOIN ' + channel + '\r\n')
 while True:
     data = irc.recv (4096)
  
-    print data
+    if data != '\r\n' and data != ' \r\n':
+        print data
  
     # commands
 #    if (name.find('fisch') != -1 or name.find('casimo') != -1) and data.split()[1] == 'QUIT':
