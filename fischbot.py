@@ -92,6 +92,7 @@ hiphrases = ('hi', 'sup?', 'heya!', 'BOOO!', 'you are going to be so sorry you s
 _8ball = ("It is certain","It is decidedly so","Without a doubt","Yes - Definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy, try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 questionphrases = responses + _8ball
 iscontrolled = False
+lastping = datetime.datetime.now()
 telldata = {}
 warned = {}
 kickwords = ('f*', 'fuck', 'penis', 'wtf')
@@ -151,7 +152,7 @@ irc.send('JOIN ' + channel + '\r\n')
 while True:
     data = irc.recv (4096)
  
-    if data and data[0] == ':':
+    if data and data != '':
         print data.strip()
  
     # commands
@@ -161,7 +162,7 @@ while True:
 #    if name.find('fisch') != -1 and data.split()[1] == 'JOIN' and name[1:] != nick:
 #        send2chan('Heya ' + name[1:] + '!')
 
-    #check if being controlled
+    # check if being controlled
     if iscontrolled:
         timediff = datetime.datetime.now() - iscontrolled
         if timediff.seconds > 60:
@@ -530,6 +531,11 @@ while True:
     # play ping-pong
     if data.find('PING') != -1:
         irc.send('PONG ' + data.split()[1] + '\r\n')
+        lastping = datetime.datetime.now()
+
+    timediff2 = datetime.datetime.now() - lastping
+    if timediff2.seconds > (60*15):
+        break
  
  
 irc.send('QUIT :My arm is tired. No more ping-pong for now!\r\n')
