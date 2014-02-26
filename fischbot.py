@@ -116,7 +116,8 @@ nicknum = 2
 
 while True:
     data = irc.recv(4096)
-    print data
+    if data and data != '':
+        print data.strip()
  
     # check for the MOTD
     if data.find('376') != -1 or data.find('422') != -1:
@@ -138,9 +139,14 @@ while True:
         irc.send('USER fischbot fischbot fischbot :fischbot IRC\r\n')
         nicknum = nicknum + 1
 
-    # handle pings and pongs
+    # play ping-pong
     if data.find('PING') != -1:
         irc.send('PONG ' + data.split()[1] + '\r\n')
+        lastping = datetime.datetime.now()
+
+    timediff2 = datetime.datetime.now() - lastping
+    if timediff2.seconds > (60*15):
+        break
  
 print '************************* Received MOTD *************************'
  
