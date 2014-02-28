@@ -92,6 +92,7 @@ hiphrases = ('hi', 'sup?', 'heya!', 'BOOO!', 'you are going to be so sorry you s
 _8ball = ("It is certain","It is decidedly so","Without a doubt","Yes - Definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy, try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 questionphrases = responses + _8ball
 iscontrolled = False
+startuptime = time.time()
 lastping = datetime.datetime.now()
 telldata = {}
 warned = {}
@@ -375,6 +376,10 @@ while True:
                 result = 'Tails'
             send2chan(result)
 
+        elif atbegin('!uptime', data):
+            uptime = time.time() - startuptime
+            send2chan('I have been online for ' + str(int(uptime)) + ' seconds.')
+
  
         elif atbegin('!say', data):
             try:
@@ -526,7 +531,7 @@ while True:
             send2chan('Hello. My name is fischbot. I am a bot. I have no brains. I am version ' + version + '. I was written in python by an awesome dude named flyingfisch and another cool geek casimo. Help can be obtained by typing !help. Information about contributing can be obtained with !info-contrib. For information on how to report bugs, type !info-bugs. I am very good at ping-pong.')
 
         elif atbegin('!help', data):
-            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret, !bigoops')
+            send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret, !bigoops, !uptime')
  
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
