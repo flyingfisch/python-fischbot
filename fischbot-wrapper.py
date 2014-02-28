@@ -1,6 +1,8 @@
 import subprocess
 import sys
 
+print sys.argv
+
 # SETUP
 try:
     nick = sys.argv[1]
