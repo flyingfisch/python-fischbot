@@ -405,6 +405,10 @@ while True:
                 noquery = True
             
             if not noquery:
+                query = query.replace('+', '%2B')
+                query = query.replace(' ', '+')
+                query = re.sub(r'!.*\>', '', query)
+                
                 send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
                 
                 try:
