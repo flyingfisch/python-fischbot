@@ -96,8 +96,8 @@ startuptime = time.time()
 lastping = datetime.datetime.now()
 telldata = {}
 warned = {}
-kickwords = ('f*', 'fuck', 'penis', 'wtf')
-badwords = ('damn', 'ass', 'arse', '@ss', '*ss', 'shit', 'sh*')
+kickwords = (' f* ', ' fuck ', ' penis ', ' wtf ')
+badwords = (' damn ', ' ass ', ' arse ', ' @ss ', ' *ss ', ' shit ', ' sh* ')
 badwordsnocaps = ('dick', 'god')
 # filenames
 hashfile = 'hashes.txt'
