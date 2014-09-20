@@ -378,7 +378,13 @@ while True:
 
         elif atbegin('!uptime', data):
             uptime = time.time() - startuptime
-            send2chan('I have been online for ' + str(int(uptime)) + ' seconds.')
+            days = math.trunc(uptime / 86400)
+            seconds = uptime - days * 86400
+            hours = math.trunc(seconds / 3600)
+            seconds = uptime - hours * 3600
+            minutes = math.trunc(seconds / 60)
+            seconds = uptime - minutes * 60
+            send2chan('I have been online for ' + str(int(days)) + ' days, ' + str(int(hours)) + ' hours, ' + str(int(minutes)) + 'minutes and ' + str(int(seconds)) + ' seconds.')
 
  
         elif atbegin('!say', data):
