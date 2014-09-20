@@ -11,6 +11,7 @@ import subprocess
 import hashlib
 import datetime
 import json
+import math
 
 debug = False
 
@@ -54,14 +55,14 @@ def atbegin(str, line):
     #    ans = line.split()[4].find(str)
     #except:
     #    ans = -1
- 
+
     if line.split()[3].find(str) != -1: #or ans != -1:
         return True
     else:
         return False
- 
+
 print sys.argv
- 
+
 # SETUP
 try:
     nick = sys.argv[1]
@@ -74,17 +75,17 @@ try:
     network = sys.argv[2]
 except:
     network = 'irc.afternet.org'
- 
+
 try:
     channel = sys.argv[3]
 except:
     channel = '#casiocalc'
- 
+
 try:
     port = sys.argv[4]
 except:
     port = 6667
- 
+
 version = '1.0.0'
 whyphrases = ('recursive', 'Casimo', 'flyingfisch', 'Sorunome', 'racecar', '... just because. ok?')
 responses = ('What is it like to live \'IRL\'? Is it nice?', 'BOOOOOOOO!!!!', 'Oh yeah!', 'Certainly', 'the ceiling', 'no', 'yes', 'do you like me?', 'who are you?', 'why?', 'how so?', 'of course.', 'no problem, right away', 'i\'m getting onto that...', 'maybe', 'possibly', 'never', 'nope', 'TI--', 'That is so old news.', 'You expect me to answer to that?', 'Casio is awesome.', ':)', ':(', '>.>')
@@ -105,10 +106,10 @@ blacklistfile = 'blacklist.txt'
 
 # Create a socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
- 
+
 # Attempt to connect
 irc.connect((network, int(port)))
- 
+
 irc.recv(4096)
 irc.send('NICK ' + nick + '\r\n')
 irc.send('USER fischbot fischbot fischbot :fischbot IRC\r\n')
@@ -119,19 +120,19 @@ while True:
     data = irc.recv(4096)
     if data and data != '':
         print data.strip()
- 
+
     # check for the MOTD
     if data.find('376') != -1 or data.find('422') != -1:
         break
- 
+
     #if data.find('998') != -1:
     #    while data.find('998') != -1:
     #        data = irc.recv(4096)
     #        print data
- 
+
     #    cookie = raw_input('Input cookie')
     #    irc.send('PONG :' + cookie + '\r\n')
- 
+
     # if nick is in use, try another
     if data.find('433') != -1:
         nick = originalnick + str(nicknum)
@@ -148,24 +149,24 @@ while True:
     timediff2 = datetime.datetime.now() - lastping
     if timediff2.seconds > (60*15):
         break
- 
+
 print '************************* Received MOTD *************************'
- 
+
 # join after MOTD
 print 'Joining ' + channel
 irc.send('JOIN ' + channel + '\r\n')
- 
- 
+
+
 while True:
     data = irc.recv (4096)
- 
+
     if data and data != '':
         print data.strip()
- 
+
     # commands
 #    if (name.find('fisch') != -1 or name.find('casimo') != -1) and data.split()[1] == 'QUIT':
 #        send2chan('Oh, don\'t leave me little buddy! I need you, and you need me!')
- 
+
 #    if name.find('fisch') != -1 and data.split()[1] == 'JOIN' and name[1:] != nick:
 #        send2chan('Heya ' + name[1:] + '!')
 
@@ -175,7 +176,7 @@ while True:
         if timediff.seconds > 60:
             iscontrolled = False
 
-    
+
     if data.find('JOIN') != -1:
         #check if should send messages to anybody (!tell)
         name = data.split('!')[0].replace(':', '')
@@ -216,7 +217,7 @@ while True:
     name = data.split('!')[0].replace(':', '')
     if name.find('naib') != -1 and data.split()[1] == 'JOIN' and random.randint(1,50) == 50:
         send2chan('Anybody here?')
- 
+
     if data.find('naib864 entered the room') != -1 and random.randint(1,50) == 50:
         send2chan('Anybody here?')
 
@@ -227,7 +228,7 @@ while True:
             print 'Kicked, trying to rejoin.'
     except:
         pass
- 
+
     if data.find('PRIVMSG') != -1:
         name = data.split('!')[0].replace(':', '')
         # check for bad words
@@ -247,7 +248,7 @@ while True:
                         print 'KICK ' + channel + ' ' + name + ' Profanity._Warned_' + str(warned[name]) + '_times.\r\n'
                         warned[name] = 0
                     send2chan(name + ': Disallowed word. Warning #' + str(warned[name]))
-                    
+
                 except:
                     send2chan(name + ': Disallowed word. Warning #1')
                     warned[name] = 1
@@ -290,7 +291,7 @@ while True:
 
             except:
                 send2chan('No name/password were provided.')
-            
+
 
         if atbegin('test', data):
             send2chan('Test received.')
@@ -360,15 +361,15 @@ while True:
                 irc.send('PRIVMSG X3 :auth fischbot ' + data.split(' ')[4] + '\r\n')
             except:
                 send2chan('No password provided.')
- 
+
         elif atbegin('!8ball', data):
             send2chan(_8ball[random.randint(0, len(_8ball) - 1)])
- 
+
         elif atbegin('!flood', data):
             send2chan('Flooding is wrong. Flooding gets bots banned. I will never flood.')
 #            while 1:
 #                send2chan('Casimo was here')
- 
+
         elif atbegin('!coin', data):
             if random.randint(0,1) == 1:
                 result = 'Heads'
@@ -384,9 +385,9 @@ while True:
             seconds = uptime - hours * 3600
             minutes = math.trunc(seconds / 60)
             seconds = uptime - minutes * 60
-            send2chan('I have been online for ' + str(int(days)) + ' days, ' + str(int(hours)) + ' hours, ' + str(int(minutes)) + 'minutes and ' + str(int(seconds)) + ' seconds.')
+            send2chan('I have been online for ' + str(int(days)) + ' days, ' + str(int(hours)) + ' hours, ' + str(int(minutes)) + ' minutes and ' + str(int(seconds)) + ' seconds.')
 
- 
+
         elif atbegin('!say', data):
             try:
                 message = re.sub('!say', '', ' '.join(data.split(' ')[4:]).strip())
@@ -396,7 +397,7 @@ while True:
             # if being controlled through /msg
             if(data.find(channel) == -1):
                 iscontrolled = datetime.datetime.now()
- 
+
             send2chan(message)
 
         elif atbegin('!ddg', data):
@@ -409,20 +410,20 @@ while True:
             if query == '' or query == ' ':
                 send2chan('http://ddg.gg/')
                 noquery = True
-            
+
             if not noquery:
                 query = query.replace('+', '%2B')
                 query = query.replace(' ', '+')
                 query = re.sub(r'!.*\>', '', query)
-                
+
                 send2chan('[DuckDuckGo Results] http://ddg.gg/?q=' + query)
-                
+
                 try:
                     url = urllib2.urlopen("http://api.duckduckgo.com/?q=" + query + "&format=json&no_redirect=1")
                 except:
                     e = sys.ecx_info()[0]
                     send2chan('An error occured :' + e.code)
-                
+
                 result = url.read()
                 url.close()
 
@@ -471,7 +472,7 @@ while True:
                     time.sleep(1)
 
                 # try to send instant answers to chat
-                
+
                 for i in (0,1,2):
                     try:
                         send2chan(d['RelatedTopics'][i]['Text'])
@@ -485,55 +486,55 @@ while True:
                         time.sleep(1)
                     except:
                         break
- 
+
         elif atbegin('!intro', data) and len(data) > 3:
             try:
                 nickToSendTo = re.sub('!intro', '', ' '.join(data.split(' ')[4:]).strip())
                 send2chan(nickToSendTo + ': You should introduce yourself: http://community.casiocalc.org/topic/5677-introduce-yourself')
             except:
                 send2chan('You didn\'t tell me who to introduce!')
- 
-            
- 
+
+
+
         elif data.lower().find('yay') != -1:
             send2chan('w00t!')
 
         elif data.lower().find('oops') != -1 or data.lower().find('d:') != -1:
             send2chan('http://tny.im/bigoops')
- 
+
         elif data.lower().find('simon lothar') != -1:
             send2chan('"I\'ll be back!"')
-    
+
         elif data.lower().find('controlled') != -1 and data.find(nick) != -1:
             if iscontrolled:
                 timediff = datetime.datetime.now() - iscontrolled
                 send2chan('I was controlled ' + str(timediff.seconds) + ' seconds ago.')
             else:
                 send2chan('Me? Controlled? No way!')
- 
+
         elif data.lower().find('are you sure') != -1 and data.find(nick) != -1:
             send2chan('of course I\'m sure!')
             time.sleep(1)
             send2chan('hmmph.')
- 
+
         elif data.lower().find('why') != -1 and random.randint(1,50) == 50:
             send2chan('because ' + whyphrases[random.randint(0, len(whyphrases) - 1)] + '.')
- 
+
         elif data.find(nick) != -1 and (data.find('hi ') != -1 or data.find(' hi') != -1):
             send2chan(hiphrases[random.randint(0, len(hiphrases) - 1)])
-         
+
         elif (data.find(nick + ':') != -1 or data.find(nick + '?') != -1) and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1:
             send2chan(responses[random.randint(0, len(responses) - 1)])
-         
+
         elif data.find(" " + nick + " ") != -1 and data.find('stupid') == -1 and data.find('sucks') == -1 and data.find('JOIN') == -1 and (not atbegin('!', data)) and data.find(channel) != -1  and random.randint(1,50) == 50:
             send2chan('I\'m popular :blush: ')
-         
+
         elif data.find(nick) != -1 and (data.find('stupid') != -1 or data.find('sucks') != -1):
             send2chan('You make me cry. :\'(')
 
         elif atbegin('!info-bugs', data):
             send2chan('Report bugs or suggest improvements by filing an issue here: https://github.com/flyingfisch/python-fischbot/issues')
- 
+
         elif atbegin('!info-contrib', data):
             send2chan('If you want to contribute, you should check my GitHub repository: https://github.com/flyingfisch/python-fischbot/')
 
@@ -542,13 +543,13 @@ while True:
 
         elif atbegin('!help', data):
             send2chan('Commands currently supported: !intro <name>, !info, !8ball <query>, !coin, !say <message>, !ddg <query>, !flood, !info-contrib, !info-bugs, !op <pass> <user>, !blame, !authfischbot <pass>, !tell <user> <message>, !slap <user>, !ret, !bigoops, !uptime')
- 
+
         if data.split()[3] == ':!goaway' and data.split()[2] == nick:
             print 'Received quit command'
             break
- 
- 
- 
+
+
+
     # play ping-pong
     if data.find('PING') != -1:
         irc.send('PONG ' + data.split()[1] + '\r\n')
@@ -557,6 +558,6 @@ while True:
     timediff2 = datetime.datetime.now() - lastping
     if timediff2.seconds > (60*15):
         break
- 
- 
+
+
 irc.send('QUIT :My arm is tired. No more ping-pong for now!\r\n')
